@@ -20,19 +20,22 @@ import java.util.concurrent.TimeUnit;
 public class Hugo {
   private static volatile boolean enabled = true;
 
-  @Pointcut("within(@hugo.weaving.DebugLog *)")
-  public void withinAnnotatedClass() {}
+  @Pointcut("within(@hugo.weaving.anotations.DebugGenericLog *)")
+  public void trackGeneric() {}
 
-  @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
+  @Pointcut("within(@hugo.weaving.anotations.DebugRenderLog *)")
+  public void trackRender() {}
+
+  @Pointcut("execution(!synthetic * *(..)) && (trackGeneric() || trackRender())")
   public void methodInsideAnnotatedType() {}
 
-  @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
+  @Pointcut("execution(!synthetic *.new(..)) && (trackGeneric() || trackRender())")
   public void constructorInsideAnnotatedType() {}
 
-  @Pointcut("execution(@hugo.weaving.DebugLog * *(..)) || methodInsideAnnotatedType()")
+  @Pointcut("execution(@hugo.weaving.anotations.DebugGenericLog * *(..)) || methodInsideAnnotatedType()")
   public void method() {}
 
-  @Pointcut("execution(@hugo.weaving.DebugLog *.new(..)) || constructorInsideAnnotatedType()")
+  @Pointcut("execution(@hugo.weaving.anotations.DebugGenericLog *.new(..)) || constructorInsideAnnotatedType()")
   public void constructor() {}
 
   public static void setEnabled(boolean enabled) {
