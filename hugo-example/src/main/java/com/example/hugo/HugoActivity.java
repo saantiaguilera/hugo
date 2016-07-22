@@ -4,37 +4,44 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
-import hugo.weaving.DebugLog;
+import hugo.weaving.anotations.DebugGenericLog;
 
 public class HugoActivity extends Activity {
-  @Override protected void onCreate(Bundle savedInstanceState) {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    TextView tv = new TextView(this);
-    tv.setText("Check logcat!");
-    setContentView(tv);
 
-    printArgs("The", "Quick", "Brown", "Fox");
+    setContentView(R.layout.activity_hugo);
 
-    Log.i("Fibonacci", "fibonacci's 4th number is " + fibonacci(4));
+    findViewById(R.id.activity_hugo_test_generic_annotation_button).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        printArgs("The", "Quick", "Brown", "Fox");
 
-    Greeter greeter = new Greeter("Jake");
-    Log.d("Greeting", greeter.sayHello());
+        Log.i("Fibonacci", "fibonacci's 4th number is " + fibonacci(4));
 
-    Charmer charmer = new Charmer("Jake");
-    Log.d("Charming", charmer.askHowAreYou());
+        Greeter greeter = new Greeter("Jake");
+        Log.d("Greeting", greeter.sayHello());
 
-    startSleepyThread();
+        Charmer charmer = new Charmer("Jake");
+        Log.d("Charming", charmer.askHowAreYou());
+
+        startSleepyThread();
+      }
+    });
   }
 
-  @DebugLog
+  @DebugGenericLog
   private void printArgs(String... args) {
     for (String arg : args) {
       Log.i("Args", arg);
     }
   }
 
-  @DebugLog
+  @DebugGenericLog
   private int fibonacci(int number) {
     if (number <= 0) {
       throw new IllegalArgumentException("Number must be greater than zero.");
@@ -54,14 +61,14 @@ public class HugoActivity extends Activity {
         sleepyMethod(SOME_POINTLESS_AMOUNT_OF_TIME);
       }
 
-      @DebugLog
+      @DebugGenericLog
       private void sleepyMethod(long milliseconds) {
         SystemClock.sleep(milliseconds);
       }
     }, "I'm a lazy thr.. bah! whatever!").start();
   }
 
-  @DebugLog
+  @DebugGenericLog
   static class Greeter {
     private final String name;
 
@@ -74,7 +81,7 @@ public class HugoActivity extends Activity {
     }
   }
 
-  @DebugLog
+  @DebugGenericLog
   static class Charmer {
     private final String name;
 
