@@ -7,7 +7,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 dependencies {
   compile 'org.aspectj:aspectjrt:1.8.6'
-  compile project(':hugo-annotations')
 
   testCompile 'junit:junit:4.12'
 }
